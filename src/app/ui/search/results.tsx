@@ -58,14 +58,38 @@ export function isValidFuelQuality(fuelQuality: string): fuelQuality is FuelQual
 }
 
 export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return Math.round(R * c * 10) / 10;     // Distance in kilometers, rounded to one decimal place
+    // Radius of the Earth in kilometers
+    const R = 6371;
+
+    // Convert latitude and longitude from degrees to radians
+    // This is necessary for the Haversine formula to work correctly
+    const lat1Rad = lat1 * Math.PI / 180;
+    const lat2Rad = lat2 * Math.PI / 180;
+    const lon1Rad = lon1 * Math.PI / 180;
+    const lon2Rad = lon2 * Math.PI / 180;
+
+    // Haversine formula to calculate the distance between two points on the Earth
+    // Reference: https://en.wikipedia.org/wiki/Haversine_formula
+    // Using the Haversine formula to calculate the distance
+    // between two points on the surface of a sphere given their latitude and longitude
+    const d = 2 * R * Math.asin(
+        Math.sqrt(
+            Math.sin((lat2Rad - lat1Rad) / 2) ** 2 +
+            Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+            Math.sin((lon2Rad - lon1Rad) / 2) ** 2
+        )
+    );
+
+    // Return the distance in kilometers, rounded to one decimal place
+    return Math.round(d * 10) / 10;
+}
+
+export function isValidLatitude(lat: number): boolean {
+    return lat >= -90 && lat <= 90;
+}
+
+export function isValidLongitude(lng: number): boolean {
+    return lng >= -180 && lng <= 180;
 }
 
 /**
