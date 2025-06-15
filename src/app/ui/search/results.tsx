@@ -84,14 +84,6 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
     return Math.round(d * 10) / 10;
 }
 
-export function isValidLatitude(lat: number): boolean {
-    return lat >= -90 && lat <= 90;
-}
-
-export function isValidLongitude(lng: number): boolean {
-    return lng >= -180 && lng <= 180;
-}
-
 /**
  * 
  * @param lat Latitude of the search location
