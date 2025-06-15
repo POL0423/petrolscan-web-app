@@ -12,6 +12,7 @@ import Image from "next/image";
 import { merriweather } from "./ui/fonts";
 import LocationSearch from "./ui/location-search";
 import Header from "./ui/header";
+import { Suspense } from "react";
 
 export default function Home() {
     return (
@@ -22,7 +23,9 @@ export default function Home() {
                     <p className={`${merriweather.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
                         <strong>Vítejte v aplikaci PetrolScan.</strong> Jedná se o webovou aplikaci, která vám pomůže najít nejlepší ceny paliva ve vašem okolí. Stačí zadat svou polohu a my vám ukážeme nejbližší čerpací stanice s aktuálními cenami paliva.
                     </p>
-                    <LocationSearch />
+                    <Suspense>
+                        <LocationSearch />
+                    </Suspense>
                 </div>
                 <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
                     <Image

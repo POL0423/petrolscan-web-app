@@ -13,6 +13,7 @@ import LocationSearch from "@/app/ui/location-search";
 import OSMData from "@/app/lib/types/OSMData";
 import SearchResults from "../ui/search/results";
 import Header from "../ui/header";
+import { Suspense } from "react";
 
 export default async function Page(props: {
     searchParams?: Promise<{
@@ -40,7 +41,9 @@ export default async function Page(props: {
                             <strong>PetrolScan srovnávač</strong>
                         </p>
                         <p className={`${merriweather.className} text-gray-600`}>Najděte nejlepší ceny paliva ve vašem okolí.</p>
-                        <LocationSearch />
+                        <Suspense>
+                            <LocationSearch />
+                        </Suspense>
                     </div>
                     <div className="justify-center p-6 md:w-3/5 md:px-28 md:py-12">
                         <h1 className={`${merriweather.className} text-2xl font-bold`}>Zadejte svou polohu</h1>
