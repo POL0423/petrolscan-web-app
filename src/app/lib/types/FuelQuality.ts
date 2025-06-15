@@ -8,7 +8,8 @@
  * Description: Type definition for fuel quality.
  ***************************************************************/
 
-type FuelQuality =      "REGULAR" |         // Regular fuel (cheaper option)
+type FuelQuality =      "STANDARD" |        // Standard fuel (cheaper option)
+                        "MIDGRADE" |        // Mid-grade fuel (moderately priced option)
                         "PREMIUM" |         // Premium fuel (more expensive option)
                         "RACING" |          // Racing fuel (most expensive, provided by some petrol stations)
                         "ALL" |             // All fuel qualities, used for filtering

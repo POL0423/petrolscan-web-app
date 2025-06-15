@@ -14,6 +14,7 @@ export const inter = Inter({
     subsets: ['latin', 'latin-ext'],
     weight: ['400', '500', '600', '700'],
 });
+
 export const merriweather = Merriweather({
     subsets: ['latin', 'latin-ext'],
     weight: ['400', '700'],

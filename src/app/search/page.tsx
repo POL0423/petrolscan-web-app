@@ -24,11 +24,11 @@ export default async function Page(props: {
     }>;
 }) {
     const searchParams = await props.searchParams;
-    const location = searchParams?.location || '';
-    const radius = searchParams?.radius || '10';
-    const sort = searchParams?.sort || 'cheapest';
-    const fuelType = searchParams?.fuel_type || 'all';
-    const fuelQuality = searchParams?.fuel_quality || 'all';
+    const location = searchParams?.location ?? '';
+    const radius = searchParams?.radius ?? '10';
+    const sort = searchParams?.sort ?? 'cheapest';
+    const fuelType = searchParams?.fuel_type ?? 'all';
+    const fuelQuality = searchParams?.fuel_quality ?? 'all';
 
     if (!location) {
         return (

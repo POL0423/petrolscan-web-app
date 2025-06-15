@@ -19,9 +19,9 @@ export default function SearchResultsFilters() {
     const { replace } = useRouter();
     const params = new URLSearchParams(searchParams);
 
-    const sort = params.get('sort') || 'cheapest';
-    const fuelType = params.get('fuel_type') || 'all';
-    const fuelQuality = params.get('fuel_quality') || 'all';
+    const sort = params.get('sort') ?? 'cheapest';
+    const fuelType = params.get('fuel_type') ?? 'all';
+    const fuelQuality = params.get('fuel_quality') ?? 'all';
 
     // Debounced function to handle search parameters update
     const handleFilters = useDebouncedCallback((sort: string, fuelType: string, fuelQuality: string) => {
@@ -59,11 +59,11 @@ export default function SearchResultsFilters() {
                 <option value="all">Všechna paliva</option>
                 <option value="petrol">Benzín</option>
                 <option value="diesel">Nafta</option>
-                <option value="adblue">AdBlue</option>
-                <option value="windscreen_cleaner">Kapalina do ostřikovačů</option>
                 <option value="lpg">LPG</option>
                 <option value="hvo">HVO</option>
                 <option value="cng">CNG</option>
+                <option value="adblue">AdBlue</option>
+                <option value="windscreen_cleaner">Kapalina do ostřikovačů</option>
             </select>
             <label htmlFor='fuel_quality' className='text-gray-700 ml-4'>Kvalita:</label>
             <select
@@ -76,8 +76,9 @@ export default function SearchResultsFilters() {
                 }}
             >
                 <option value="all">Nerozhoduje</option>
-                <option value="regular">Standardní</option>
-                <option value="premium">Prémiový</option>
+                <option value="standard">Standardní</option>
+                <option value="midgrade">Střední</option>
+                <option value="premium">Prémiová</option>
                 <option value="racing">Závodní</option>
             </select>
         </form>

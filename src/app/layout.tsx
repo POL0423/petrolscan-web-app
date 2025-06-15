@@ -13,25 +13,25 @@ import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 
 export const metadata: Metadata = {
-  title: {
-    default: "PetrolScan",
-    template: "%s | PetrolScan",
-  },
-  description: "A web application for comparing fuel prices",
+    title: {
+        default: "PetrolScan",
+        template: "%s | PetrolScan",
+    },
+    description: "A web application for comparing fuel prices",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="cs">
-      <body
-        className={`${inter.className} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang="cs">
+            <body
+                className={`${inter.className} antialiased`}
+            >
+                {children}
+            </body>
+        </html>
+    );
 }

@@ -34,8 +34,10 @@ export function translateFuelType(fuelType: FuelType | string): string {
 
 export function translateFuelQuality(fuelQuality: FuelQuality | string): string {
     switch (fuelQuality) {
-        case "REGULAR":
+        case "STANDARD":
             return 'Standardní';
+        case "MIDGRADE":
+            return 'Střední';
         case "PREMIUM":
             return 'Prémiová';
         case "RACING":
@@ -46,11 +48,13 @@ export function translateFuelQuality(fuelQuality: FuelQuality | string): string 
 }
 
 export function isValidFuelType(fuelType: string): fuelType is FuelType {
-    return ["DIESEL", "PETROL", "LPG", "HVO", "CNG", "ADBLUE", "WINDSCREEN_CLEANER", "ALL", "UNKNOWN"].includes(fuelType.toUpperCase());
+    return ["DIESEL", "PETROL", "LPG", "HVO", "CNG", "ADBLUE", "WINDSCREEN_CLEANER", "ALL", "UNKNOWN"]
+        .includes(fuelType.toUpperCase());
 }
 
 export function isValidFuelQuality(fuelQuality: string): fuelQuality is FuelQuality {
-    return ["REGULAR", "PREMIUM", "RACING", "ALL", "UNKNOWN"].includes(fuelQuality.toUpperCase());
+    return ["STANDARD", "MIDGRADE", "PREMIUM", "RACING", "ALL", "UNKNOWN"]
+        .includes(fuelQuality.toUpperCase());
 }
 
 export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -124,11 +128,14 @@ export default async function SearchResults({
     // Debugging: Log the query and parameters
     console.debug("Executing query:", geoQuery);
     console.debug("With parameters:", { longitude, latitude, r, fuelTypeCap, fuelQualityCap });
-    console.debug("Compiled SQL query:", mysql.format(geoQuery, [longitude, latitude, r, ...(fuelTypeCap !== 'ALL' ? [fuelTypeCap] : []), ...(fuelQualityCap !== 'ALL' ? [fuelQualityCap] : [])]));
+    console.debug("Compiled SQL query:", mysql.format(geoQuery,
+        [longitude, latitude, r, ...(fuelTypeCap !== 'ALL' ? [fuelTypeCap] : []),
+        ...(fuelQualityCap !== 'ALL' ? [fuelQualityCap] : [])]));
 
     try {
         const [rows, fields]: [RowDataPacket[], FieldPacket[]] = await connection.execute<RowDataPacket[]>(geoQuery,
-            [longitude, latitude, r, ...(fuelTypeCap !== 'ALL' ? [fuelTypeCap] : []), ...(fuelQualityCap !== 'ALL' ? [fuelQualityCap] : [])]
+            [longitude, latitude, r, ...(fuelTypeCap !== 'ALL' ? [fuelTypeCap] : []),
+            ...(fuelQualityCap !== 'ALL' ? [fuelQualityCap] : [])]
         );
 
         // Debugging: Log the raw rows returned from the database
@@ -147,7 +154,7 @@ export default async function SearchResults({
         }
 
         const results = rows.map(row => {
-            const fuels = JSON.parse(row.fuels || '[]');
+            const fuels = JSON.parse(row.fuels ?? '[]');
             return {
                 station_name: row.station_name,
                 station_address: row.station_loc_name,
@@ -163,7 +170,7 @@ export default async function SearchResults({
                 <h1 className={`${merriweather.className} text-2xl font-bold`}>Výsledky hledání</h1>
                 <SearchResultsFilters />
                 <p>Celkem nalezeno {results.length} čerpacích stanic.</p>
-                <ul className="list-disc pl-6 m-4 px-4 scrollable max-h-60 overflow-y-auto">
+                <ul className="list-disc pl-6 m-4 px-4 scrollable max-h-80 overflow-y-auto">
                     {results.map((row) => (
                         <li key={row.station_address} className="mb-4">
                             <p className="text-lg">
@@ -184,7 +191,7 @@ export default async function SearchResults({
                                         <div className="text-sm text-gray-500 flex flex-wrap flex-row gap-2">
                                             <p><span className="font-semibold">Typ:</span> {translateFuelType(fuel.fuel_type)}</p>
                                             <p>•</p>
-                                            <p><span className="font-semibold">Kvalita:</span> {translateFuelQuality(fuel.fuel_quality) || <span className="text-gray-500">Nerozhoduje</span>}</p>
+                                            <p><span className="font-semibold">Kvalita:</span> {translateFuelQuality(fuel.fuel_quality) ?? 'Nerozhoduje'}</p>
                                         </div>
                                     </li>
                                 ))}
