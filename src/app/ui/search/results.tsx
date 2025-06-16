@@ -170,7 +170,9 @@ export default async function SearchResults({
         }
 
         const results = rows.map(row => {
-            const fuels = JSON.parse(row.fuels ?? '[]');
+            const fuels = (row.fuels && typeof row.fuels === 'string')
+                ? JSON.parse(row.fuels ?? '[]')
+                : (Array.isArray(row.fuels) ? row.fuels : []);
             return {
                 station_name: row.station_name,
                 station_address: row.station_loc_name,
