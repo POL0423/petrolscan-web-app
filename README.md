@@ -1,38 +1,69 @@
-# PetrolScan Web App Init
+# PetrolScan Web Application
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This web application is part of my Bachelor Thesis assignment
+([available here](https://github.com/POL0423/BachelorThesis)).
 
-## Getting Started
+I created it as a [Next.js](https://nextjs.org) project bootstrapped with
+[`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![PetrolScan inside a web browser on a PC](web-home-desktop.jpg)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This web application consists of two parts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. [Home page](#home-page)
+2. [Search results](#search-results)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Home page
 
-## Learn More
+The home page is the entry point to the application. It contains a splash image
+that showcases how the website looks like on PC in the browser, and in a phone.
+On the left side, you can see the search form, where you enter your location
+and the search radius. Search form contains an autocomplete listener that displays
+the full location suggestions, based on your input. Autocomplete uses the
+[OpenStreetMap Nominatim API](https://nominatim.openstreetmap.org/) which makes it
+possible to search up OpenStreetMap data. API query requests data in JSON format,
+and looks mainly for the list of suggested locations.
 
-To learn more about Next.js, take a look at the following resources:
+### Search results
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![PetrolScan search results in a web browser on a PC](web-search-desktop.jpg)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Once you have submitted your search query, couple of things happen. First, your
+location search contacts OSM API to retrieve the GPS location of that specific
+location. If multiple locations are available, the first result is used.
+That GPS location is then used for database query and filtered based on the
+spherical distance of the specified points and filters settings (fuel type
+and quality), sorted by the price ascending or descending (depending on sort
+settings). Default sorting option is ascending, and no fuel quality and type
+is being filtered. Filters and sorting options are available at the top of the
+search results. These options finetune the database query.
 
-## Deploy on Vercel
+Remember the GPS coordinates retrieved for filtering based on the spherical
+distance? What MySQL uses is something called Haversine Formula. This formula
+is embedded to the search results page as well and computes the spherical
+distance of the reference GPS location to the petrol station GPS location.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Finally, the search results contain following parts:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- List of petrol stations in the vicinity. Each item contains these parts:
+  - Petrol station name and address
+  - List of fuels at this petrol station (if filtered, contains only those
+    selected ). Each fuel is described by these parts:
+    - Fuel name and price in CZK
+    - Fuel type and quality
+  - The distane to this petrol station relative to the reference GPS coordinates
+  - Last update date.
+- Scrollbar if the list is longer.
+
+## Language
+
+Programming langage used is TypeScript. The website language is in Czech
+language, since the Bachelor Thesis is written in Czech language.
+
+## GitHub Copilot?
+
+The use of GitHub Copilot for this part was minimal, only for troubleshooting.
+For example the autocomplete section was AI-assisted, to fix it not being
+able to work.
