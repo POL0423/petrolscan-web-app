@@ -36,6 +36,10 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
+# Install and change the local timezone to Europe/Prague
+RUN apk add tzdata && \
+    ln -s /usr/share/zoneinfo/Europe/Prague /etc/localtime
+
 RUN npm install next
 
 CMD ["npm", "start"]
